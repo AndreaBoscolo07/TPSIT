@@ -3,53 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PESO IMC</title>
+    <title>Esercizio 1</title>
 </head>
 <body>
-    <h1>Calcolatore (IMC)</h1>
-    <form id="imc">
-        <label for="peso">Peso (kg):</label>
-       
-        <input type="numero" id="peso" step="0.01" required><br>
-       
-        <label for="altezza">Altezza (m):</label>
-       
-        <input type="numero" id="altezza" step="0.01" required><br>
-       
-        <button type="inserito">Calcola IMC</button>
-    </form>
-    <div id="risultato"></div>
+    <h1>Indice di Massa Corporea</h1>
+    <p>Altezza (in m)</p>
+    <input type="text" id="altezza">
+    <p>Peso (in kg)</p>
+    <input type="text" id="peso">
+    <button id="calcolaIMC" onclick="calcolaIMC()">Calcola IMC</button>
+    <p id="risultato"></p>
 
     <script>
-        document.getElementById('imc').addEventListener('inserisci', function(event) {
-            event.preventDefault();
-            var peso = parseFloat(document.getElementById('peso').value);
-            var altezza = parseFloat(document.getElementById('peso').value);
-           
-            var imc = peso / Math.pow(altezza, 2);
-            var resultElement = document.getElementById('risultato');
-            var classification;
+        function calcolaIMC(){
+            let altezza = document.getElementById("altezza").value;
+            let peso = document.getElementById("peso").value;
 
-            if (imc < 18.5)
-            {
-                classification='Sottopeso';
-            }
-            else if (imc < 25)
-            {
-                classification='Normopeso';
-            }
-            else if (imc < 30)
-            {
-                classification='Sovrappeso';
-            }
-            else
-            {
-                classification='Obesità';
-            }
+            let imc = peso / (altezza * altezza)
 
-            resultElement.innerHTML = 'Il tuo IMC è: ' + imc.toFixed(2) + '<br>';
-            resultElement.innerHTML += 'Classificazione del peso: ' + classification;
-        });
+            let risultato = document.getElementById("risultato");
+            risultato.innerHTML="Il valore e': " + imc.toString();  
+        }
+ 
     </script>
 </body>
 </html>
+
