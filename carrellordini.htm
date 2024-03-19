@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bar Virtuale</title>
+</head>
+
+<body>
+  <p id="elenco-bevande"></p>
+  <p id="carrello"></p>
+  <button id="aggiungi-bevanda" onclick="aggiungiBevanda()">Aggiungi bevanda</button>
+  <button id="rimuovi-bevanda" onclick="rimuoviBevanda()">Rimuovi bevanda</button>
+  <button id="conta-bevande" onclick="contaBevande()">Conta bevande</button>
+  <button id="ordina-bevande" onclick="ordinaBevande()">Ordina bevande</button>
+
+  <p>Numero di bevande nel menu : </p>
+  <p id="numero-bevande"></p>
+
+  <h2>Carrello:</h2>
+  <p id="lista-carrello"></p>
+
+  <script>
+    const bevande = ["Coca-Cola", "Spritz", "Sprite", "Fanta", "Birra", "Belvedere", "Martini", "Coca-Cola Zero"]
+    let quantitaBevande = bevande.length;
+    const carrello = [];
+    document.getElementById("elenco-bevande").innerHTML = bevande.join(" ") + " #bevande: " + quantitaBevande;
+
+    function contaBevande() {
+      let quantitaBevande = bevande.length;
+      document.getElementById("numero-bevande").innerHTML = quantitaBevande;
+    }
+
+    function aggiungiBevanda() {
+      let bevanda = prompt("Inserisci la tua bevanda:");
+      bevande.push(bevanda);
+      let numeroBevande = bevande.length;
+      document.getElementById("elenco-bevande").innerHTML = bevande.join(" ") + " #bevande: " + numeroBevande;
+    }
+
+    function rimuoviBevanda() {
+      let bevanda = bevande.pop();
+      let quantitaBevande = bevande.length;
+      document.getElementById("elenco-bevande").innerHTML = bevande.join(" ") + " #bevande: " + quantitaBevande;
+    }
+
+    function ordinaBevande() {
+      let grandezzaBevande = bevande.length - 1;
+      let bevandaDaOrdinare = prompt("Inserisci la tua bevanda (0 - " + grandezzaBevande + "):");
+      carrello.push(bevandaDaOrdinare);
+      document.getElementById("lista-carrello").innerHTML = bevande[bevandaDaOrdinare];
+    }
+  </script>
+
+</body>
+
+</html>
