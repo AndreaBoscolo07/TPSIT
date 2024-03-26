@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Frasi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h1 class="text-center">Generatore di Frasi</h1>
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary" onclick="aggiungiSoggetto()">Aggiungi Soggetto</button>
+                    <button class="btn btn-primary" onclick="aggiungiVerbo()">Aggiungi Verbo</button>
+                    <button class="btn btn-primary" onclick="aggiungiComplemento()">Aggiungi Complemento</button>
+                    <button class="btn btn-success" onclick="creaFrase()">Crea Frase</button>
+                    <button class="btn btn-success" onclick="creaFraseCasuale()">Crea Frase Casuale</button>
+                </div>
+                <div class="text-center">
+                    <h3>Soggetti</h3>
+                    <ul id="soggettiList" class="list-group mb-3"></ul>
+                    <h3>Verbi</h3>
+                    <ul id="verbiList" class="list-group mb-3"></ul>
+                    <h3>Complementi</h3>
+                    <ul id="complementiList" class="list-group mb-3"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var soggetti = [];
+        var verbi = [];
+        var complementi = [];
+
+        function aggiungiSoggetto(){
+            var soggetto = prompt("Inserisci un soggetto:");
+            if(soggetto){
+                soggetti.push(soggetto);
+                aggiornaListe();
+            }
+        }
+
+        function aggiungiVerbo(){
+            var verbo = prompt("Inserisci un verbo:");
+            if(verbo){
+                verbi.push(verbo);
+                aggiornaListe();
+            }
+        }
+
+        function aggiungiComplemento(){
+            var complemento = prompt("Inserisci un complemento:");
+            if(complemento){
+                complementi.push(complemento);
+                aggiornaListe();
+            }
+        }
+
+        function creaFrase(){
+            if(soggetti.length > 0 && verbi.length > 0 && complementi.length > 0){
+                alert(soggetti[0] + " " + verbi[0] + " " + complementi[0]+".");
+            } else {
+                alert("Non hai inserito tutti i campi");
+            }
+        }
+
+        function creaFraseCasuale(){
+            if(soggetti.length > 0 && verbi.length > 0 && complementi.length > 0){
+                var casualeSoggetto = Math.floor(Math.random() * soggetti.length);
+                var casualeVerbo = Math.floor(Math.random() * verbi.length);
+                var casualeComplemento = Math.floor(Math.random() * complementi.length);
+                alert(soggetti[casualeSoggetto] + " " + verbi[casualeVerbo] + " " + complementi[casualeComplemento]+".");
+            } else {
+                alert("Non hai inserito tutti i campi");
+            }
+        }
+
+        function aggiornaListe(){
+            aggiornaLista("soggettiList", soggetti);
+            aggiornaLista("verbiList", verbi);
+            aggiornaLista("complementiList", complementi);
+        }
+
+        function aggiornaLista(listaId, array){
+            var lista = document.getElementById(listaId);
+            lista.innerHTML = '';
+            for (var i = 0; i < array.length; i++){
+                var listItem = document.createElement("li");
+                listItem.className = "list-group-item";
+                listItem.textContent = array[i];
+                lista.appendChild(listItem);
+            }
+        }
+    </script>
+</body>
+</html>
