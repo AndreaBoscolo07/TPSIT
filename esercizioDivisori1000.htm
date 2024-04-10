@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>DIVISORI DEL NUMERO N</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+  <p>Divisori di tutti i numeri da 1 a 1000</p>
+
+  <button onclick="mostraDivisori()">Mostra divisori</button>
+
+  <div id="divisoriContainer"></div>
+
+  <script>
+    function mostraDivisori() {
+     
+      let divisoriContainer = document.getElementById("divisoriContainer");
+      
+     
+      divisoriContainer.innerHTML = "";
+
+     
+      for (let n = 1; n <= 1000; n++) {
+        let divisori = [];
+        let massimoDivisorePossibile = n / 2;
+        for (let i = 1; i <= massimoDivisorePossibile; i++) {
+          if (n % i === 0) {
+            divisori.push(i);
+          }
+        }
+        
+        let divisoriText = document.createTextNode("I divisori di " + n + " sono: " + divisori.join(", "));
+        divisoriContainer.appendChild(divisoriText);
+      
+        divisoriContainer.appendChild(document.createElement("br"));
+      }
+    }
+  </script>
+</body>
+
+</html>
