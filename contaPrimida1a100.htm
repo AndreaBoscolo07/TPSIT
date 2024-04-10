@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Numeri primi a intervalli di 100 fino a 1000</title>
+  <style>
+    /* Stili CSS possono essere aggiunti qui se necessario */
+  </style>
+</head>
+
+<body>
+
+  <p>Numeri primi a intervalli di 100 fino a 1000</p>
+
+  <button onclick="mostraNumeriPrimi()">Mostra numeri primi</button>
+
+  <div id="numeriPrimiContainer"></div>
+  <div id="conteggioNumeriPrimi"></div>
+
+  <script>
+    function mostraNumeriPrimi() {
+      let numeriPrimiContainer = document.getElementById("numeriPrimiContainer");
+      let conteggioNumeriPrimi = document.getElementById("conteggioNumeriPrimi");
+      numeriPrimiContainer.innerHTML = "";
+      conteggioNumeriPrimi.innerHTML = "";
+
+      let count = 0; // Contatore per numeri primi
+      let countIntervallo = 0; // Contatore per numeri primi nell'intervallo corrente
+
+      for (let n = 2; n <= 1000; n++) {
+        let divisoreTrovato = false;
+        for (let i = 2; i <= Math.sqrt(n); i++) {
+          if (n % i === 0) {
+            divisoreTrovato = true;
+            break;
+          }
+        }
+        if (!divisoreTrovato) {
+          let numeriPrimiText = document.createTextNode("Il numero " + n + " è primo.");
+          numeriPrimiContainer.appendChild(numeriPrimiText);
+          numeriPrimiContainer.appendChild(document.createElement("br"));
+          count++; // Incrementa il contatore complessivo
+          countIntervallo++; // Incrementa il contatore dell'intervallo corrente
+        }
+
+        // Ogni 100 numeri, mostra il conteggio dell'intervallo
+        if (n % 100 === 0) {
+          let conteggioIntervalloText = document.createTextNode("Intervallo " + (n / 100) + ": " + countIntervallo);
+          conteggioNumeriPrimi.appendChild(conteggioIntervalloText);
+          conteggioNumeriPrimi.appendChild(document.createElement("br"));
+          countIntervallo = 0; // Reimposta il conteggio dell'intervallo
+        }
+      }
+
+      // Visualizza il conteggio complessivo dei numeri primi
+      let conteggioTotaleText = document.createTextNode("Totale numeri primi: " + count);
+      conteggioNumeriPrimi.appendChild(conteggioTotaleText);
+    }
+  </script>
+</body>
+
+</html>
