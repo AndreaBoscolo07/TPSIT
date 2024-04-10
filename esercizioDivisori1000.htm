@@ -21,10 +21,10 @@
      
       let divisoriContainer = document.getElementById("divisoriContainer");
       
-     
+      
       divisoriContainer.innerHTML = "";
 
-     
+      
       for (let n = 1; n <= 1000; n++) {
         let divisori = [];
         let massimoDivisorePossibile = n / 2;
@@ -33,13 +33,20 @@
             divisori.push(i);
           }
         }
+          if (divisori.length === 1) {
+                let divisoriText = document.createTextNode("Il numero " + n + " è primo.");
+                divisoriContainer.appendChild(divisoriText);
+            } else {
+                let divisoriText = document.createTextNode("I divisori di " + n + " sono: " + divisori.join(", "));
+                divisoriContainer.appendChild(divisoriText);
+            }
+
+            divisoriContainer.appendChild(document.createElement("br"));
+        }
+
         
-        let divisoriText = document.createTextNode("I divisori di " + n + " sono: " + divisori.join(", "));
-        divisoriContainer.appendChild(divisoriText);
-      
-        divisoriContainer.appendChild(document.createElement("br"));
       }
-    }
+    
   </script>
 </body>
 
