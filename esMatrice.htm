@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabella 8x8</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+            width: 12.5%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tabella 8x8</h1>
+    <table id="tabella"></table>
+
+    <script>
+        const matrice = Array.from({ length: 8 }, (_, i) => 
+            Array.from({ length: 8 }, (_, j) => i * 8 + j + 1)
+        );
+
+        function generaTabella(matrice) {
+            const tabella = document.getElementById('tabella');
+
+            matrice.forEach(rigaArray => {
+                const rigaHTML = document.createElement('tr');
+                rigaArray.forEach(valore => {
+                    const cellaHTML = document.createElement('td');
+                    cellaHTML.textContent = valore;
+                    rigaHTML.appendChild(cellaHTML);
+                });
+                tabella.appendChild(rigaHTML);
+            });
+        }
+
+        generaTabella(matrice);
+    </script>
+</body>
+</html>
