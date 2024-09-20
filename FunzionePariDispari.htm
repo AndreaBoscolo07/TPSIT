@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Numeri Casuali</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #number-box {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background-color: grey;
+        }
+
+        #generate-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #pari, #dispari {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 20px;
+            color: white;
+        }
+
+        #pari {
+            background-color: green;
+        }
+
+        #dispari {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generatore di Numeri Casuali</h1>
+    <button id="generate-button">Genera Numero Casuale</button>
+    <div id="number-box">Numero</div>
+    <div id="pari">Il numero è pari!</div>
+    <div id="dispari">Il numero è dispari!</div>
+
+    <script>
+        function getRandomNumber() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+
+        function updateNumberBox() {
+            const numberBox = document.getElementById('number-box');
+            const randomNumber = getRandomNumber();
+            numberBox.textContent = `Numero: ${randomNumber}`;
+
+            const pariDiv = document.getElementById('pari');
+            const dispariDiv = document.getElementById('dispari');
+
+            // Nascondi entrambi i messaggi prima di mostrare il risultato corretto
+            pariDiv.style.display = 'none';
+            dispariDiv.style.display = 'none';
+
+            // Mostra il div corretto (pari o dispari) senza cambiare colore
+            if (randomNumber % 2 === 0) {
+                pariDiv.style.display = 'block';
+            } else {
+                dispariDiv.style.display = 'block';
+            }
+        }
+
+        document.getElementById('generate-button').addEventListener('click', updateNumberBox);
+    </script>
+</body>
+</html>
