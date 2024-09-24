@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Numeri Randomici</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #numeri-casuali {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+       
+        #controllo-parita {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+            color: #666;
+            border: 1px solid black;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #pulsante-genera {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #differenza {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+            color: #fff;
+            background-color: #ccc;
+            padding: 10px;
+            border: 1px solid black;
+            width: 200px;
+            height: 30px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generatore di Numeri Randomici</h1>
+    <button id="pulsante-genera">Genera Numeri</button>
+    <div id="numeri-casuali"></div>
+    <div id="controllo-parita">Controllo se pari o dispari</div>
+    <div id="controllo-primo">Controllo se primo</div>
+    <div id="numeri-casuali-2"></div>
+    <div id="controllo-parita-2">Controllo se pari o dispari</div>
+    <div id="controllo-primo-2">Controllo se primo</div>
+    <div id="differenza"></div>
+
+    <script>
+        function generaNumeroCasuale() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+       
+        function aggiornaNumeri() {
+            const primoNumeroDiv = document.getElementById('numeri-casuali');
+            const controlloParitaDiv = document.getElementById('controllo-parita');
+            const controlloPrimoDiv = document.getElementById('controllo-primo');
+            const secondoNumeroDiv = document.getElementById('numeri-casuali-2');
+            const controlloParitaDiv2 = document.getElementById('controllo-parita-2');
+            const controlloPrimoDiv2 = document.getElementById('controllo-primo-2');
+            const differenzaDiv = document.getElementById('differenza');
+            
+            const primoNumero = generaNumeroCasuale();
+            const secondoNumero = generaNumeroCasuale();
+            
+            primoNumeroDiv.textContent = `Primo Numero: ${primoNumero}`;
+            secondoNumeroDiv.textContent = `Secondo Numero: ${secondoNumero}`;
+            
+            controlloParitaDiv.textContent = primoNumero % 2 === 0 ? 'Il primo numero è pari' : 'Il primo numero è dispari';
+            controlloPrimoDiv.textContent = eNumeroPrimo(primoNumero) ? 'Il primo numero è primo' : 'Il primo numero non è primo';
+            
+            controlloParitaDiv2.textContent = secondoNumero % 2 === 0 ? 'Il secondo numero è pari' : 'Il secondo numero è dispari';
+            controlloPrimoDiv2.textContent = eNumeroPrimo(secondoNumero) ? 'Il secondo numero è primo' : 'Il secondo numero non è primo';
+            
+            const differenza = Math.abs(primoNumero - secondoNumero);
+            differenzaDiv.textContent = `Differenza: ${differenza}`;
+        }
+
+        function eNumeroPrimo(num) {
+            if (num <= 1) return false;
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false;
+            }
+            return true;
+        }
+       
+        document.getElementById('pulsante-genera').addEventListener('click', aggiornaNumeri);
+    </script>
+</body>
+</html>
