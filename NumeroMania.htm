@@ -183,71 +183,95 @@
 
             // Funzione per generare una sfida matematica in base al livello
             function generaSfida(livello) {
-                let num1, num2; // Numeri per l'operazione
+    let num1, num2;
 
-                if (livello <= 5) {
-                    num1 = Math.floor(Math.random() * 50) + 10; // Primo numero tra 10 e 60
-                    num2 = Math.floor(Math.random() * 50) + 10; // Secondo numero tra 10 e 60
-                    rispostaCorretta = num1 + num2; // Somma dei numeri
-                    sfidaCorrente = `${num1} + ${num2}`; // Operazione visualizzata
-                } else if (livello <= 10) {
-                    num1 = Math.floor(Math.random() * 50) - 25; // Primo numero tra -25 e 25
-                    num2 = Math.floor(Math.random() * 50) - 25; // Secondo numero tra -25 e 25
-                    rispostaCorretta = num1 - num2; // Sottrazione dei numeri
-                    sfidaCorrente = `${num1} - ${num2}`; // Operazione visualizzata
-                } else if (livello <= 15) {
-                    num1 = Math.floor(Math.random() * 20) + 5; // Primo numero tra 5 e 25
-                    num2 = Math.floor(Math.random() * 10) + 5; // Secondo numero tra 5 e 10
-                    rispostaCorretta = num1 * num2; // Moltiplicazione dei numeri
-                    sfidaCorrente = `${num1} × ${num2}`; // Operazione visualizzata
-                } else {
-                    num2 = Math.floor(Math.random() * 10) + 2; // Divisore tra 2 e 11
-                    rispostaCorretta = Math.floor(Math.random() * 10) * num2; // Risultato divisibile per num2
-                    sfidaCorrente = `${rispostaCorretta} ÷ ${num2}`; // Operazione visualizzata
-                }
+    if (livello <= 5) {
+        num1 = Math.floor(Math.random() * 50) + 10; // Primo numero tra 10 e 60
+        num2 = Math.floor(Math.random() * 50) + 10; // Secondo numero tra 10 e 60
+        rispostaCorretta = num1 + num2;
+        sfidaCorrente = `${num1} + ${num2}`; // Usa backticks
+    } else if (livello <= 10) {
+        num1 = Math.floor(Math.random() * 50) - 25; // Primo numero tra -25 e 25
+        num2 = Math.floor(Math.random() * 50) - 25; // Secondo numero tra -25 e 25
+        rispostaCorretta = num1 - num2;
+        sfidaCorrente = `${num1} - ${num2}`; // Usa backticks
+    } else if (livello <= 15) {
+        num1 = Math.floor(Math.random() * 20) + 5; // Primo numero tra 5 e 25
+        num2 = Math.floor(Math.random() * 10) + 5; // Secondo numero tra 5 e 10
+        rispostaCorretta = num1 * num2;
+        sfidaCorrente = `${num1} x ${num2}`; // Usa backticks
+    } else {
+        num2 = Math.floor(Math.random() * 10) + 2; // Divisore tra 2 e 11
+        rispostaCorretta = Math.floor(Math.random() * 10) + 2; // Risultato tra 2 e 11
+        num1 = rispostaCorretta * num2;
+        sfidaCorrente = `${num1} / ${num2}`; // Usa backticks
+    }
 
-                // Mostra l'operazione da risolvere
-                document.getElementById('sfida-operazione').textContent = sfidaCorrente;
-            }
+    document.getElementById('sfida-operazione').textContent = sfidaCorrente; // Mostra la sfida
+    document.getElementById('messaggio-risultato').textContent = ''; // Rimuove il messaggio precedente
+}
 
-            // Funzione per avviare il timer
+
+            // Funzione per avviare il timer che decremente il tempo ogni secondo
             function avviaTimer() {
-                intervalloTimer = setInterval(function() {
-                    tempoRimanente--;
-                    document.getElementById('timer').textContent = tempoRimanente; // Aggiorna il timer visualizzato
+                if (intervalloTimer) clearInterval(intervalloTimer); // Pulisce l'intervallo precedente
 
-                    if (tempoRimanente <= 0) {
-                        clearInterval(intervalloTimer); // Ferma il timer quando finisce il tempo
-                        concludiLivello(false); // Concludi il livello senza successo
+                // Imposta il tempo rimanente in base al livello
+                if (livello <= 5) {
+                    tempoRimanente = 30;
+                } else if (livello <= 10) {
+                    tempoRimanente = 25;
+                } else if (livello <= 15) {
+                    tempoRimanente = 20;
+                } else {
+                    tempoRimanente = 15;
+                }
+
+                document.getElementById('timer').textContent = tempoRimanente; // Mostra il tempo iniziale
+
+                intervalloTimer = setInterval(function() {
+                    if (tempoRimanente > 0) {
+                        tempoRimanente--; // Diminuisce il tempo
+                        document.getElementById('timer').textContent = tempoRimanente; // Mostra il tempo aggiornato
+                    } else {
+                        clearInterval(intervalloTimer); // Ferma il timer quando il tempo è finito
+                        document.getElementById('messaggio-risultato').textContent = 'Tempo scaduto!'; // Messaggio di tempo scaduto
+                        document.getElementById('messaggio-risultato').style.color = 'red'; // Colore rosso per errore
+                        livelliNonCompletati++; // Aumenta il contatore dei livelli non completati
+                        livello++; // Passa al livello successivo
+                        setTimeout(() => (livello <= 20 ? iniziaLivello(livello) : fineGioco()), 2000); // Inizia il prossimo livello o fine gioco
                     }
-                }, 1000); // Aggiorna ogni secondo
+                }, 1000);
             }
 
-            // Evento per inviare la risposta
+            // Gestione risposta del giocatore: verifica se è corretta
             document.getElementById('invia-risposta').addEventListener('click', function() {
-                let rispostaGiocatore = parseInt(document.getElementById('risposta-giocatore').value.trim());
+                const rispostaGiocatore = parseInt(document.getElementById('risposta-giocatore').value); // Risposta dell'utente
 
+                // Se la risposta è corretta
                 if (rispostaGiocatore === rispostaCorretta) {
-                    concludiLivello(true); // Risposta corretta, concludi con successo
+                    document.getElementById('messaggio-risultato').textContent = 'Bravo! Risposta corretta.'; // Messaggio di successo
+                    document.getElementById('messaggio-risultato').style.color = 'darkgreen'; // Colore verde per risposta corretta
+                    livello++; // Aumenta il livello
                 } else {
-                    concludiLivello(false); // Risposta errata, concludi senza successo
+                    document.getElementById('messaggio-risultato').textContent = 'Risposta sbagliata. Passiamo al prossimo livello.'; // Messaggio di errore
+                    document.getElementById('messaggio-risultato').style.color = 'red'; // Colore rosso per errore
+                    livelliNonCompletati++; // Aumenta il contatore dei livelli non completati
+                    livello++; // Passa al livello successivo
                 }
+
+                document.getElementById('risposta-giocatore').value = ''; // Pulisce il campo di risposta
+                setTimeout(() => (livello <= 20 ? iniziaLivello(livello) : fineGioco()), 2000); // Inizia il prossimo livello o fine gioco
             });
 
-            // Funzione per concludere un livello
-            function concludiLivello(successo) {
-                if (successo) {
-                    livelliNonCompletati = 0; // Resetta il conteggio dei fallimenti
-                    document.getElementById('messaggio-risultato').textContent = 'Risposta corretta! Avanti al prossimo livello.';
-                    setTimeout(function() {
-                        livello++;
-                        tempoRimanente = 30; // Reset del timer
-                        iniziaLivello(livello); // Passa al livello successivo
-                    }, 2000); // Aspetta 2 secondi prima di passare al prossimo livello
-                } else {
-                    livelliNonCompletati++; // Aumenta il conteggio dei fallimenti
-                    document.getElementById('messaggio-risultato').textContent = `Risposta errata. Livelli non completati: ${livelliNonCompletati}`;
-                }
+            // Funzione per terminare il gioco e mostrare i risultati finali
+            function fineGioco() {
+                document.querySelector('.contenitore-gioco').innerHTML = 
+                    `<h1 style="font-size: 100px; color: #ff6b6b;">FINE</h1>
+                    <p style="font-size: 24px;">Complimenti, ${nomeUtente}!</p>
+                    <p style="font-size: 20px;">Non hai superato ${livelliNonCompletati} livelli.</p>
+                    <p style="font-size: 18px;">Riprova per migliorare!</p>
+                    <button onclick="location.reload()" style="padding: 12px 25px; font-size: 18px;">Ricomincia</button>`;
             }
         });
     </script>
