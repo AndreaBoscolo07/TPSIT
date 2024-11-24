@@ -202,68 +202,52 @@
                     sfidaCorrente = `${num1} × ${num2}`; // Operazione visualizzata
                 } else {
                     num2 = Math.floor(Math.random() * 10) + 2; // Divisore tra 2 e 11
-                    rispostaCorretta = Math.floor(Math.random() * 10) + 2; // Risultato tra 2 e 11
-                    sfidaCorrente = `${rispostaCorretta} ÷ ${num2}`; // Operazione di divisione
+                    rispostaCorretta = Math.floor(Math.random() * 10) * num2; // Risultato divisibile per num2
+                    sfidaCorrente = `${rispostaCorretta} ÷ ${num2}`; // Operazione visualizzata
                 }
 
-                document.getElementById('sfida-operazione').textContent = sfidaCorrente; // Mostra la sfida
+                // Mostra l'operazione da risolvere
+                document.getElementById('sfida-operazione').textContent = sfidaCorrente;
             }
 
             // Funzione per avviare il timer
             function avviaTimer() {
                 intervalloTimer = setInterval(function() {
-                    tempoRimanente--; // Decrementa il tempo
+                    tempoRimanente--;
                     document.getElementById('timer').textContent = tempoRimanente; // Aggiorna il timer visualizzato
+
                     if (tempoRimanente <= 0) {
-                        clearInterval(intervalloTimer); // Ferma il timer quando il tempo scade
-                        controllaRisultato(); // Controlla se la risposta è corretta
+                        clearInterval(intervalloTimer); // Ferma il timer quando finisce il tempo
+                        concludiLivello(false); // Concludi il livello senza successo
                     }
-                }, 1000); // Ogni secondo
+                }, 1000); // Aggiorna ogni secondo
             }
 
             // Evento per inviare la risposta
             document.getElementById('invia-risposta').addEventListener('click', function() {
-                let rispostaUtente = parseInt(document.getElementById('risposta-giocatore').value.trim()); // Risposta dell'utente
+                let rispostaGiocatore = parseInt(document.getElementById('risposta-giocatore').value.trim());
 
-                if (isNaN(rispostaUtente)) { // Se la risposta non è un numero
-                    alert("Per favore, inserisci un numero!");
-                    return;
+                if (rispostaGiocatore === rispostaCorretta) {
+                    concludiLivello(true); // Risposta corretta, concludi con successo
+                } else {
+                    concludiLivello(false); // Risposta errata, concludi senza successo
                 }
-
-                controllaRisultato(rispostaUtente); // Controlla la risposta dell'utente
             });
 
-            // Funzione per verificare se la risposta è corretta
-            function controllaRisultato(rispostaUtente) {
-                if (rispostaUtente === rispostaCorretta) { // Risposta corretta
-                    document.getElementById('messaggio-risultato').textContent = "Risposta corretta!";
-                    livello++; // Aumenta il livello
-                    livelliNonCompletati = 0; // Resetta i tentativi errati
-                } else { // Risposta errata
-                    document.getElementById('messaggio-risultato').textContent = "Risposta errata!";
-                    livelliNonCompletati++; // Incrementa i tentativi errati
-                    if (livelliNonCompletati >= 3) { // Se ci sono 3 tentativi errati, finisce il gioco
-                        fineGioco();
-                        return;
-                    }
+            // Funzione per concludere un livello
+            function concludiLivello(successo) {
+                if (successo) {
+                    livelliNonCompletati = 0; // Resetta il conteggio dei fallimenti
+                    document.getElementById('messaggio-risultato').textContent = 'Risposta corretta! Avanti al prossimo livello.';
+                    setTimeout(function() {
+                        livello++;
+                        tempoRimanente = 30; // Reset del timer
+                        iniziaLivello(livello); // Passa al livello successivo
+                    }, 2000); // Aspetta 2 secondi prima di passare al prossimo livello
+                } else {
+                    livelliNonCompletati++; // Aumenta il conteggio dei fallimenti
+                    document.getElementById('messaggio-risultato').textContent = `Risposta errata. Livelli non completati: ${livelliNonCompletati}`;
                 }
-
-                // Passa al prossimo livello o fine gioco
-                setTimeout(function() {
-                    if (livelliNonCompletati < 3) {
-                        tempoRimanente = 30;
-                        iniziaLivello(livello);
-                    }
-                }, 2000);
-            }
-
-            // Funzione per finire il gioco
-            function fineGioco() {
-                document.querySelector('.contenitore-gioco').innerHTML = `
-                    <div class="fine-gioco">
-                        <h1>Game Over</h1>
-                        <p>Hai completato ${livello - 1} livelli. Grazie per aver giocato!</p>
-                    </div>`;
             }
         });
     </script>
