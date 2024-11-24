@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NumeroMania</title>
+    <title>Gioco delle Operazioni</title>
     <style>
+        /* Stili CSS */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -93,16 +94,6 @@
             margin-top: 15px;
         }
 
-        .fine-gioco h1 {
-            font-size: 4em;
-            color: #ff6b6b;
-        }
-
-        .fine-gioco p {
-            font-size: 1.3em;
-            margin-top: 15px;
-        }
-
         #nome-utente {
             padding: 12px;
             font-size: 1.2em;
@@ -121,7 +112,7 @@
 <body>
 
     <div class="contenitore-gioco">
-        <h1>NumeroMania</h1>
+        <h1>Gioco delle Operazioni</h1>
         <p>Divertiti con le operazioni matematiche!</p>
 
         <!-- Sezione per inserire il nome utente -->
@@ -130,7 +121,7 @@
             <button id="inizia-gioco">Inizia il Gioco</button>
         </div>
 
-        <!-- Sezione di gioco (inizialmente nascosta) -->
+        <!-- Sezione di gioco -->
         <div id="pulsante-gioco-avviato">
             <div id="informazioni-livello">
                 <p><strong>Nome: </strong><span id="nome-giocatore">?</span></p>
@@ -145,126 +136,130 @@
                 <p id="messaggio-risultato"></p>
             </div>
         </div>
-
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            let livello = 1;
-            let sfidaCorrente;
-            let rispostaCorretta;
-            let tempoRimanente = 30;
-            let intervalloTimer;
-            let livelliNonCompletati = 0;
-            let nomeUtente = '';
+            // Variabili globali del gioco
+            let livello = 1; // Livello corrente
+            let sfidaCorrente; // La sfida corrente (operazione matematica)
+            let rispostaCorretta; // La risposta corretta alla sfida
+            let tempoRimanente; // Tempo rimanente per rispondere
+            let intervalloTimer; // Intervallo per il countdown del timer
+            let livelliNonCompletati = 0; // Numero di livelli non completati
+            let nomeUtente = ''; // Nome dell'utente
 
-            // Evento per avviare il gioco
+            // Evento che inizia il gioco quando l'utente inserisce il nome
             document.getElementById('inizia-gioco').addEventListener('click', function() {
-                nomeUtente = document.getElementById('nome-utente').value.trim();
+                nomeUtente = document.getElementById('nome-utente').value.trim(); // Prendi il nome dell'utente
 
                 if (nomeUtente) {
-                    document.getElementById('area-nome-utente').style.display = 'none';
-                    document.getElementById('pulsante-gioco-avviato').style.display = 'block';
-                    document.getElementById('nome-giocatore').textContent = nomeUtente;
-                    iniziaLivello(livello);
+                    document.getElementById('area-nome-utente').style.display = 'none'; // Nascondi la sezione del nome
+                    document.getElementById('pulsante-gioco-avviato').style.display = 'block'; // Mostra la sezione di gioco
+                    document.getElementById('nome-giocatore').textContent = nomeUtente; // Mostra il nome dell'utente
+                    iniziaLivello(livello); // Inizia il primo livello
                 } else {
-                    alert("Per favore, inserisci il tuo nome!");
+                    alert("Per favore, inserisci il tuo nome!"); // Se il nome non è stato inserito, mostra un messaggio
                 }
             });
 
+            // Funzione che inizia un livello specifico
             function iniziaLivello(livello) {
-                document.getElementById('numero-livello').textContent = livello;
-                document.getElementById('timer').textContent = tempoRimanente;
-                generaSfida(livello);
-                avviaTimer();
+                document.getElementById('numero-livello').textContent = livello; // Mostra il livello corrente
+                generaSfida(livello); // Genera una nuova sfida per il livello
+                avviaTimer(); // Avvia il timer
             }
 
+            // Funzione che genera una sfida matematica in base al livello
             function generaSfida(livello) {
                 let num1, num2;
 
+                // Genera sfide diverse a seconda del livello
                 if (livello <= 5) {
                     num1 = Math.floor(Math.random() * 50) + 10;
                     num2 = Math.floor(Math.random() * 50) + 10;
                     rispostaCorretta = num1 + num2;
-                    sfidaCorrente = ${num1} + ${num2};
+                    sfidaCorrente = `${num1} + ${num2}`;
                 } else if (livello <= 10) {
                     num1 = Math.floor(Math.random() * 50) - 25;
                     num2 = Math.floor(Math.random() * 50) - 25;
                     rispostaCorretta = num1 - num2;
-                    sfidaCorrente = ${num1} - ${num2};
+                    sfidaCorrente = `${num1} - ${num2}`;
                 } else if (livello <= 15) {
                     num1 = Math.floor(Math.random() * 20) + 5;
                     num2 = Math.floor(Math.random() * 20) + 5;
                     rispostaCorretta = num1 * num2;
-                    sfidaCorrente = ${num1} x ${num2};
+                    sfidaCorrente = `${num1} x ${num2}`;
                 } else {
                     num1 = Math.floor(Math.random() * 200) + 50;
                     num2 = Math.floor(Math.random() * 20) + 2;
                     rispostaCorretta = Math.floor(num1 / num2);
-                    sfidaCorrente = ${num1} / ${num2};
+                    sfidaCorrente = `${num1} / ${num2}`;
                 }
 
+                // Mostra l'operazione corrente
                 document.getElementById('sfida-operazione').textContent = sfidaCorrente;
-                document.getElementById('messaggio-risultato').textContent = '';
             }
 
+            // Funzione che avvia il timer
             function avviaTimer() {
-                if (intervalloTimer) clearInterval(intervalloTimer);
+                if (intervalloTimer) clearInterval(intervalloTimer); // Pulisci il precedente timer, se esiste
 
-                // Gradualità della diminuzione del tempo
-                if (livello <= 5) {
-                    tempoRimanente = 30;
-                } else if (livello <= 10) {
-                    tempoRimanente = 25;
-                } else if (livello <= 15) {
-                    tempoRimanente = 20;
-                } else {
-                    tempoRimanente = 15;
-                }
+                // Imposta il tempo in base al livello
+                tempoRimanente = livello <= 5 ? 30 : livello <= 10 ? 25 : livello <= 15 ? 20 : 15;
 
+                // Mostra il tempo rimanente
                 document.getElementById('timer').textContent = tempoRimanente;
 
+                // Avvia il countdown
                 intervalloTimer = setInterval(function() {
                     if (tempoRimanente > 0) {
-                        tempoRimanente--;
+                        tempoRimanente--; // Riduci il tempo di un secondo
                         document.getElementById('timer').textContent = tempoRimanente;
                     } else {
-                        clearInterval(intervalloTimer);
-                        document.getElementById('messaggio-risultato').textContent = 'Tempo scaduto!';
-                        document.getElementById('messaggio-risultato').style.color = 'red';
-                        livelliNonCompletati++;
-                        livello++;
-                        setTimeout(() => (livello <= 20 ? iniziaLivello(livello) : fineGioco()), 2000);
+                        clearInterval(intervalloTimer); // Ferma il timer quando il tempo scade
+                        fineTurno(false); // Fine turno se il tempo è scaduto
                     }
                 }, 1000);
             }
 
-            // Gestione risposta giocatore
+            // Evento che invia la risposta dell'utente
             document.getElementById('invia-risposta').addEventListener('click', function() {
-                const rispostaGiocatore = parseInt(document.getElementById('risposta-giocatore').value);
+                const rispostaGiocatore = parseInt(document.getElementById('risposta-giocatore').value); // Ottieni la risposta dell'utente
 
                 if (rispostaGiocatore === rispostaCorretta) {
-                    document.getElementById('messaggio-risultato').textContent = 'Bravo! Risposta corretta.';
-                    document.getElementById('messaggio-risultato').style.color = 'darkgreen';
-                    livello++;
+                    fineTurno(true); // Se la risposta è corretta, termina il turno come vincente
                 } else {
-                    document.getElementById('messaggio-risultato').textContent = 'Risposta sbagliata. Passiamo al prossimo livello.';
-                    document.getElementById('messaggio-risultato').style.color = 'red';
-                    livelliNonCompletati++;
-                    livello++;
+                    fineTurno(false); // Se la risposta è errata, termina il turno come perso
                 }
-
-                document.getElementById('risposta-giocatore').value = '';
-                setTimeout(() => (livello <= 20 ? iniziaLivello(livello) : fineGioco()), 2000);
             });
 
+            // Funzione che termina il turno
+            function fineTurno(corretta) {
+                clearInterval(intervalloTimer); // Ferma il timer
+
+                // Mostra il messaggio di risultato
+                if (corretta) {
+                    document.getElementById('messaggio-risultato').textContent = 'Risposta corretta!';
+                    document.getElementById('messaggio-risultato').style.color = 'darkgreen';
+                } else {
+                    document.getElementById('messaggio-risultato').textContent = 'Risposta errata o tempo scaduto!';
+                    document.getElementById('messaggio-risultato').style.color = 'red';
+                    livelliNonCompletati++; // Incrementa i livelli non completati
+                }
+
+                // Incrementa il livello e avvia il prossimo, oppure termina il gioco
+                livello++;
+                setTimeout(() => (livello <= 20 ? iniziaLivello(livello) : fineGioco()), 2000);
+            }
+
+            // Funzione che termina il gioco e mostra i risultati finali
             function fineGioco() {
                 document.querySelector('.contenitore-gioco').innerHTML = `
-                    <h1 style="font-size: 100px; color: #ff6b6b;">FINE</h1>
-                    <p style="font-size: 24px;">Complimenti, ${nomeUtente}!</p>
-                    <p style="font-size: 20px;">Non hai superato ${livelliNonCompletati} livelli.</p>
-                    <p style="font-size: 18px;">Riprova per migliorare!</p>
-                    <button onclick="location.reload()" style="padding: 12px 25px; font-size: 18px;">Ricomincia</button>
+                    <h1>FINE</h1>
+                    <p>Complimenti, ${nomeUtente}!</p>
+                    <p>Non hai superato ${livelliNonCompletati} livelli.</p>
+                    <button onclick="location.reload()">Ricomincia</button>
                 `;
             }
         });
